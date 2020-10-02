@@ -20,3 +20,10 @@ services:
     image: traefik/whoami
     labels:
       - "traefik.http.routers.dummy-container.rule=Host(`dummy-container.docker.localhost`)"
+  nginx:
+    #Frontend-app
+    image: nginx:mainline
+    container_name: nginx
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.docker.localhost`)"
