@@ -27,3 +27,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.docker.localhost`)"
+  
+  redis:
+    image: redis:latest      
