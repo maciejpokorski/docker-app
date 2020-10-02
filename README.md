@@ -23,7 +23,7 @@ Smallest stable version
 
 ### Dependencies
 
-* Docker
+* Docker-compose
 * Ubuntu
 
 ### Installing
