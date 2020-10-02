@@ -60,4 +60,7 @@ ex. Maciej Pokorski
     * Initial Release
 
 ## Acknowledgments
-
+https://docs.docker.com/compose/
+https://doc.traefik.io/traefik/getting-started/quick-start/
+https://medium.com/swlh/alpine-slim-stretch-buster-jessie-bullseye-bookworm-what-are-the-differences-in-docker-62171ed4531d
+https://www.nginx.com/blog/nginx-1-6-1-7-released/
