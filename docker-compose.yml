@@ -23,9 +23,9 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
-      - "traefik.http.middlewares.www-redirectregex.redirectregex.regex=.*www.*"
-      - "traefik.http.middlewares.www-redirectregex.redirectregex.replacement=https://localhost"
-      - "traefik.http.middlewares.www-redirectregex.redirectregex.permanent=true"
+      - "traefik.http.middlewares.wwwtohttps.redirectregex.regex=.*www.*"
+      - "traefik.http.middlewares.wwwtohttps.redirectregex.replacement=https://localhost"
+      - "traefik.http.middlewares.wwwtohttps.redirectregex.permanent=true"
 
       - "traefik.http.middlewares.http-redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.http-redirectscheme.redirectscheme.permanent=true"
@@ -46,7 +46,7 @@ services:
 
   nginx:
     #Frontend-app
-    image: nginx:mainline
+    image: nginx:mainline-alpine
     container_name: nginx
     labels:
       - "traefik.enable=true"
@@ -60,7 +60,7 @@ services:
       - "traefik.http.routers.nginx-http.middlewares=http-redirectscheme"
   
   redis:
-    image: redis:latest      
+    image: redis:alpine
   
   postgreSQL:
     image: postgres:9.6.19-alpine
