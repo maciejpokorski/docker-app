@@ -101,6 +101,7 @@ Starting whiteaster-app_reverse-proxy_1   ... done
 ![dashboard](https://i.imgur.com/j67m3zy.png)
 
 * Test endpoints rediractions
+
 ```curl -H Host:dummy-container.docker.localhost http://localhost```
 
 ```curl -H Host:nginx-container.docker.localhost http://localhost```
