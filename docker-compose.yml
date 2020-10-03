@@ -23,6 +23,10 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
+      - "traefik.http.middlewares.www-redirectregex.redirectregex.regex=.*www.*"
+      - "traefik.http.middlewares.www-redirectregex.redirectregex.replacement=https://localhost"
+      - "traefik.http.middlewares.www-redirectregex.redirectregex.permanent=true"
+
       - "traefik.http.middlewares.http-redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.http-redirectscheme.redirectscheme.permanent=true"
 
@@ -34,6 +38,7 @@ services:
       - "traefik.http.routers.dummy-container.rule=Host(`dummy-container.docker.localhost`)"
       - "traefik.http.routers.dummy-container.tls=true"
       - "traefik.http.routers.dummy-container.tls.certresolver=le"
+      - "traefik.http.routers.dummy-container.middlewares=wwwtohttps"
         
       - "traefik.http.routers.dummy-container-http.entrypoints=web"
       - "traefik.http.routers.dummy-container-http.rule=Host(`dummy-container.docker.localhost`)"
@@ -46,6 +51,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.docker.localhost`)"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.routers.nginx.tls.certresolver=le"
+      - "traefik.http.routers.nginx.middlewares=wwwtohttps"
+
+      - "traefik.http.routers.nginx-http.entrypoints=web"
+      - "traefik.http.routers.nginx-http.rule=Host(`nginx.docker.localhost`)"
+      - "traefik.http.routers.nginx-http.middlewares=http-redirectscheme"
   
   redis:
     image: redis:latest      
