@@ -5,25 +5,42 @@ services:
     # The official v2 Traefik docker image
     image: traefik:v2.3
     # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    command: 
+      - --api.insecure=true 
+      - --providers.docker
+      - --entrypoints.web.address=:80
+      - --entrypoints.web-secure.address=:443
+      - --certificatesresolvers.le.acme.email=maciekpokorski@gmail.com
+      - --certificatesresolvers.le.acme.storage=/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
     ports:
       # The HTTP port
       - "80:80"
       # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
+      - "443:443" #Docker sends requests on port 443 to Traefik on port 443
     volumes:
       # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+            #  - "traefik.http.middlewares.http-redirectregex.redirectregex.regex=^http:(.*)"
+            #  - "traefik.http.middlewares.http-redirectregex.redirectregex.replacement=https://localhost" 
+      - "traefik.http.middlewares.http-redirectregex.redirectscheme.scheme=https"
 
   dummy-container:
     # A container that exposes an API to show its IP address
     image: traefik/whoami
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.dummy-container.rule=Host(`dummy-container.docker.localhost`)"
-      - "traefik.http.middlewares.test-redirectregex.redirectregex.regex=^http://(.*)localhost"
-      - "traefik.http.middlewares.test-redirectregex.redirectregex.replacement=https://localhost"
-      - "traefik.http.middlewares.test-redirectregex.redirectregex.permanent=true"
-      - "traefik.http.routers.dummy-container.middlewares=test-redirectregex"
+      - "traefik.http.routers.dummy-container.tls=true"
+      - "traefik.http.routers.dummy-container.tls.certresolver=le"
+        
+      - "traefik.http.routers.dummy-container-http.entrypoints=web"
+      - "traefik.http.routers.dummy-container-http.rule=Host(`dummy-container.docker.localhost`)"
+      - "traefik.http.routers.dummy-container-http.middlewares=http-redirectregex"
+      #- "traefik.http.routers.dummy-container-http.middlewares=http-redirectregex"
+
   nginx:
     #Frontend-app
     image: nginx:mainline
