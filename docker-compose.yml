@@ -20,6 +20,10 @@ services:
     image: traefik/whoami
     labels:
       - "traefik.http.routers.dummy-container.rule=Host(`dummy-container.docker.localhost`)"
+      - "traefik.http.middlewares.test-redirectregex.redirectregex.regex=^http://(.*)localhost"
+      - "traefik.http.middlewares.test-redirectregex.redirectregex.replacement=https://localhost"
+      - "traefik.http.middlewares.test-redirectregex.redirectregex.permanent=true"
+      - "traefik.http.routers.dummy-container.middlewares=test-redirectregex"
   nginx:
     #Frontend-app
     image: nginx:mainline
