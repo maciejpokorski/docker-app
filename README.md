@@ -3,7 +3,55 @@
 ## Description
 Simple docker based devops architecture implementation
 
-![architecture schema](https://i.imgur.com/dFkpp60.png)
+```                        
+                                                XXXXXXXX        XXXXXXX
+                                              XX       XXX    XXX     XX  XXXXXX
+                                          XXX            XXXXX         XXX     X
+                                          XX                                  XX
+                                           XX           INTERNET              X
+                                            XX                       XXXX    XX
+                                             XXX      XXX         XXX   XXXXXX
+                                               XXXXXXX  XXXXXXXXXXX
+                                                             +
+                                                             |
+                                                             |
+                                                             |
+                                                             |
+                                                    +--------v---------+
+                                                    |                  |
+                                                    |   Traefik 2      |
+                                                    |   Edge router    |
+                                                    |                  |
+                                                    +---------+--------+
+                                                              |
+       +---------------------------+--------------------------+
+       |                           |                          |
++------v-----------+      +--------v---------+                |
+|                  |      |                  |                |             +------------------+
+|   Nginx          |      | Dummy-container  |                |             |                  |
+|                  |      |                  |                +------------->  PostgreSQL      |
+|                  |      |                  |                |             |                  |
++------------------+      +------------------+                |             |                  |
+                                                              |             +------------------+
+                                                              |
+                                                              |
+                                                              |             +------------------+
+                                                              |             |                  |
+                                                              +------------->  Redis           |
+                                                              |             |                  |
+                                                              |             |                  |
+                                                              |             +------------------+
+                                                              |
+                                                              |
+                                                              |             +------------------+
+                                                              |             |                  |
+                                                              +------------->  RabbitMQ        |
+                                                                            |                  |
+                                                                            |                  |
+                                                                            +------------------+
+
+
+```
 
 ### Traefik2
 auto generated SSL
