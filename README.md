@@ -102,6 +102,7 @@ Starting whiteaster-app_reverse-proxy_1   ... done
 
 * Test endpoints rediractions
 ```curl -H Host:dummy-container.docker.localhost http://localhost```
+
 ```curl -H Host:nginx-container.docker.localhost http://localhost```
 
 Means that redirect http->https works
