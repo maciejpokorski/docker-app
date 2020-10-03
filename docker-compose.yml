@@ -23,9 +23,8 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
-            #  - "traefik.http.middlewares.http-redirectregex.redirectregex.regex=^http:(.*)"
-            #  - "traefik.http.middlewares.http-redirectregex.redirectregex.replacement=https://localhost" 
-      - "traefik.http.middlewares.http-redirectregex.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.http-redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.http-redirectscheme.redirectscheme.permanent=true"
 
   dummy-container:
     # A container that exposes an API to show its IP address
@@ -38,8 +37,7 @@ services:
         
       - "traefik.http.routers.dummy-container-http.entrypoints=web"
       - "traefik.http.routers.dummy-container-http.rule=Host(`dummy-container.docker.localhost`)"
-      - "traefik.http.routers.dummy-container-http.middlewares=http-redirectregex"
-      #- "traefik.http.routers.dummy-container-http.middlewares=http-redirectregex"
+      - "traefik.http.routers.dummy-container-http.middlewares=http-redirectscheme"
 
   nginx:
     #Frontend-app
